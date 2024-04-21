@@ -2,6 +2,14 @@ import React, { useState, ChangeEvent, useEffect } from 'react';
 import axios from 'axios'; // axiosをインポート
 import { sendCoordinates } from '../api/apiClient';
 
+import { useDraggable } from '@dnd-kit/core';
+import { CSS } from '@dnd-kit/utilities';
+import {
+  ButtonXAdjustCoordinate,
+  ButtonYAdjustCoordinate,
+} from '../components/ButtonXYAdjustCoordinate';
+// import ButtonAdjustCoordinates from '../components/ButtonAdjustCoordinates';
+
 interface Props {
   xValues: string[];
   setXValues: React.Dispatch<React.SetStateAction<string[]>>;
@@ -36,6 +44,28 @@ const MarkerCoordinates: React.FC<Props> = ({
       });
   };
 
+  const handleXCoordinatesMinus = (num: number) => {
+    const newXCoordinatesMinus: number[] = xValues.map(Number);
+    newXCoordinatesMinus[num] = newXCoordinatesMinus[num] - 2;
+    setXValues(newXCoordinatesMinus.map(String));
+  };
+  const handleXCoordinatesPlus = (num: number) => {
+    const newXCoordinatesPlus: number[] = xValues.map(Number);
+    newXCoordinatesPlus[num] = newXCoordinatesPlus[num] + 2;
+    setXValues(newXCoordinatesPlus.map(String));
+  };
+
+  const handleYCoordinatesMinus = (num: number) => {
+    const newYCoordinatesMinus: number[] = yValues.map(Number);
+    newYCoordinatesMinus[num] = newYCoordinatesMinus[num] - 2;
+    setYValues(newYCoordinatesMinus.map(String));
+  };
+  const handleYCoordinatesPlus = (num: number) => {
+    const newYCoordinatesPlus: number[] = yValues.map(Number);
+    newYCoordinatesPlus[num] = newYCoordinatesPlus[num] + 2;
+    setYValues(newYCoordinatesPlus.map(String));
+  };
+
   return (
     <div className='container mx-auto p-6 max-w-3000 max-h-3000 relative'>
       <h1 className='text-2xl font-bold mb-4'>Marker Coordinates</h1>
@@ -66,6 +96,13 @@ const MarkerCoordinates: React.FC<Props> = ({
         {/* 左上の空白 */}
         <div className='col-start-2 col-end-3 '>
           <h2 className='text-xl font-semibold'>X Coordinates</h2>
+
+          {/* <ButtonAdjustCoordinates
+            onClickLeft={() => handleXCoordinatesMinus(0)}
+          ></ButtonAdjustCoordinates>
+                    <ButtonAdjustCoordinates
+            onClickLeft={() => handleXCoordinatesMinus(1)}
+          ></ButtonAdjustCoordinates> */}
           <div className='flex'>
             {xValues.map((value, index) => (
               <input
@@ -94,6 +131,25 @@ const MarkerCoordinates: React.FC<Props> = ({
           className='absolute left-56 top-40 '
           style={{ width: '2000px', height: '3000px' }}
         >
+          <div
+            className='absolute  top-40 '
+            style={{ left: '770px', top: ' 300px', zIndex: 1 }}
+          >
+            <ButtonXAdjustCoordinate
+              handleXCoordinatesMinus={handleXCoordinatesMinus}
+              handleXCoordinatesPlus={handleXCoordinatesPlus}
+            />
+          </div>
+          <div
+            className='absolute  top-40 '
+            style={{ left: '500px', top: ' 390px', zIndex: 1 }}
+          >
+            <ButtonYAdjustCoordinate
+              handleYCoordinatesMinus={handleYCoordinatesMinus}
+              handleYCoordinatesPlus={handleYCoordinatesPlus}
+            />
+          </div>
+
           <h2 className='text-xl font-semibold mb-2'>Image with Markers</h2>
           <div className='absolute  '>
             <div className='relative bg-gray-300 shadow-2xl '>
@@ -113,8 +169,8 @@ const MarkerCoordinates: React.FC<Props> = ({
                       left: `${x}px`, // x位置を調整して中心に配置
                       top: `${y}px`, // y位置を調整して中心に配置
                       borderRadius: '1px', // 角を丸める
-                      width : '30px',
-                      height : '30px',
+                      width: '30px',
+                      height: '30px',
                     }}
                   ></div>
                 )),
