@@ -66,6 +66,14 @@ const MarkerCoordinates: React.FC<Props> = ({
     setYValues(newYCoordinatesPlus.map(String));
   };
 
+  const seiXPreset = [800, 900, 1020, 1110, 1230];
+  const seiYPreset = [377, 415, 560, 598, 739, 776, 924, 958, 1100, 1140];
+
+  const handlePreset = (XPreset: string[], YPreset: string[]) => {
+    setXValues(XPreset);
+    setYValues(YPreset);
+  };
+
   return (
     <div className='container mx-auto p-6 max-w-3000 max-h-3000 relative'>
       <h1 className='text-2xl font-bold mb-4'>Marker Coordinates</h1>
@@ -190,6 +198,21 @@ const MarkerCoordinates: React.FC<Props> = ({
             </div>
           </div>
         </div>
+      </div>
+      <hr
+        className='border-t-1 border-gray-200 shadow-md my-10'
+        style={{ width: '200px' }}
+      />
+
+      <div>
+        <button
+          className='bg-gray-500 hover:bg-gray-700 text-white font-bold  px-5 rounded inline-flex items-center'
+          onClick={() =>
+            handlePreset(seiXPreset.map(String), seiYPreset.map(String))
+          }
+        >
+          sei
+        </button>
       </div>
     </div>
   );
